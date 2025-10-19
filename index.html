@@ -15,31 +15,29 @@
 <body>
     <h1>Lord of the Rings Quotes</h1>
     <div id="quotes"></div>
-    <script>
-        async function fetchQuotes() {
-            // Raw URL for the JSON file (the "raw" version)
-            const url = "https://raw.githubusercontent.com/MikAoJk/lotr-quote/main/data.json";
-            try {
-                const response = await fetch(url);
-                if (!response.ok) throw new Error("Failed to fetch quotes");
-                const quotes = await response.json();
-                const container = document.getElementById('quotes');
-                container.innerHTML = '';
-                quotes.forEach(q => {
-                    const div = document.createElement('div');
-                    div.className = 'quote';
-                    div.innerHTML = `
-                        <div class="text">"${q.text}"</div>
-                        <div class="author">- ${q.character}</div>
-                        <}</div>
-                    `;
-                    container.appendChild(div);
-                });
-            } catch (err) {
-                document.getElementById('quotes').innerText = "Error loading quotes: " + err.message;
-            }
+    <<script>
+    async function fetchQuotes() {
+        const url = "https://raw.githubusercontent.com/MikAoJk/lotr-quote/main/data.json";
+        try {
+            const response = await fetch(url);
+            if (!response.ok) throw new Error("Failed to fetch quotes");
+            const quotes = await response.json();
+            const container = document.getElementById('quotes');
+            container.innerHTML = '';
+            // Show only one quote (first one)
+            const q = quotes[0]; // or use quotes[Math.floor(Math.random() * quotes.length)] for a random quote
+            const div = document.createElement('div');
+            div.className = 'quote';
+            div.innerHTML = `
+                <div class="text">"${q.text}"</div>
+                <div class="author">- ${q.character}</div>
+            `;
+            container.appendChild(div);
+        } catch (err) {
+            document.getElementById('quotes').innerText = "Error loading quotes: " + err.message;
         }
-        fetchQuotes();
+    }
+    fetchQuotes();
     </script>
 </body>
 </html>

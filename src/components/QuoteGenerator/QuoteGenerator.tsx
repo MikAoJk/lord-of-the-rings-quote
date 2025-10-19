@@ -1,34 +1,20 @@
 import styles from "./QuoteGenerator.module.css";
 
-import {useEffect, useState} from "react";
-import {Quote} from "@/pages/api/quotes";
+import {useState} from "react";
 
-const QUOTES_URL = `/api/quotes`;
+import quotes from "./data/data.json";
+
+export interface Quote {
+    text: string;
+    author: string;
+}
 const QuoteGenerator = () => {
 
-    const [quotes, setQuotes] = useState([]);
-    const [quoteData, setQuoteData] = useState<Quote>();
+    const [randomQuote, setRandomQuote] = useState<Quote>();
 
-    useEffect(() => {
-        fetchData()
-            .then((json) => {
-                setQuotes(json);
-                setQuoteData(
-                    {
-                        text: json[0].text,
-                        author: json[0].author
-                    }
-                )
-            });
-    }, []);
-
-
-    function getRandomQuote(quotes: any[]) {
-        return quotes[Math.floor(Math.random() * quotes.length)];
-    }
-
-    function getNewQuote() {
-        setQuoteData(getRandomQuote(quotes));
+    const findRandomQuote = async () => {
+        const randomQuote = findRandomQuoteFromJson()
+        setRandomQuote(randomQuote);
     }
 
 
@@ -36,16 +22,16 @@ const QuoteGenerator = () => {
         <div className={styles.main}>
             <div className={styles.h1}> <h1>LOTR Quote</h1>
             </div>
-            {(quoteData?.text) &&
+            {(randomQuote?.text) &&
                 <section>
                     <h3>
                         <span>“</span>
-                        {quoteData?.text}
+                        {randomQuote?.text}
                         <span>“</span>
                     </h3>
-                    <i>- {quoteData?.author}</i>
+                    <i>- {randomQuote?.author}</i>
                     <div className={styles.button}>
-                        <button onClick={getNewQuote}>New Quote</button>
+                        <button onClick={findRandomQuote}>New Quote</button>
                     </div>
                 </section>
 
@@ -54,17 +40,8 @@ const QuoteGenerator = () => {
     )
 }
 
-async function fetchData(): Promise<any> {
-
-        const response = await fetch(QUOTES_URL, {
-            method: 'GET'
-        });
-
-        if (!response.ok) {
-            throw new Error(`Http status code is ${response.status}`);
-        }
-
-        return await response.json();
+function findRandomQuoteFromJson(): Quote {
+    return quotes[Math.floor(Math.random() * quotes.length)];
 }
 
 export default QuoteGenerator;

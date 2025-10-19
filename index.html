@@ -61,7 +61,7 @@
     <div id="quotes"></div>
     <script>
     async function fetchQuotes() {
-        const url = "https://raw.githubusercontent.com/MikAoJk/lotr-quote/main/data.json";
+        const url = "data.json";
         try {
             const response = await fetch(url);
             if (!response.ok) throw new Error("Failed to fetch quotes");

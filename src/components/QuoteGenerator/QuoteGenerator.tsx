@@ -1,3 +1,5 @@
+'use client';
+
 import styles from "./QuoteGenerator.module.css";
 
 import {useState} from "react";
